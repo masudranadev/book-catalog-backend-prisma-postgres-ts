@@ -34,6 +34,16 @@
             "date": 1693573202423,
             "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\errors\\phu-2023-01-09-19-error.log",
             "hash": "84c71b80b907d42015efe28e0f85c7c8ccf97f51f3763f0aadd51613310ca590"
+        },
+        {
+            "date": 1693583231175,
+            "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\errors\\phu-2023-01-09-21-error.log",
+            "hash": "c067def640dca33653e1b7df14d3fa2bbe679a068ffa6dcd863ae9b800ad3764"
+        },
+        {
+            "date": 1693584001100,
+            "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\errors\\phu-2023-01-09-22-error.log",
+            "hash": "08905daffba08d7393bb6f400d84266b65d9d5d08055f4909bcd2b5abcc85088"
         }
     ],
     "hashType": "sha256"
