@@ -151,14 +151,27 @@ const getBooksByCategoryId = async (
   };
 };
 
-const getBookById = async(id: string): Promise<Book | null> => {
-  const result = await prisma.book.findUnique({where: {id}});
+const getBookById = async (id: string): Promise<Book | null> => {
+  const result = await prisma.book.findUnique({ where: { id } });
   return result;
-}
+};
+const updateBookById = async (
+  id: string,
+  payload: Partial<Book>
+): Promise<Book | null> => {
+  const result = await prisma.book.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
 
 export const BookService = {
   insertIntoDB,
   getBooks,
   getBooksByCategoryId,
-  getBookById
+  getBookById,
+  updateBookById,
 };
