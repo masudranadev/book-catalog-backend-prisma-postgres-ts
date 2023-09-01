@@ -7,6 +7,7 @@ import { BookValidation } from './book.validation';
 
 const router = Router();
 router.get('/', BookController.getBooks);
+router.get('/:categoryId/category', BookController.getBooksByCategoryId);
 router.post(
   '/create-book',
   auth(ENUM_USER_ROLE.ADMIN),

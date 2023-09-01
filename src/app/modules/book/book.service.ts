@@ -21,7 +21,7 @@ const getBooks = async (
   options: IPaginationOptions
 ): Promise<IGenericResponse<Book[]>> => {
   const { size, page, skip } = paginationHelpers.calculatePagination(options);
-  const { search,minPrice, maxPrice, ...filterData } = filters;
+  const { search, minPrice, maxPrice, ...filterData } = filters;
 
   const andConditions = [];
 
@@ -107,8 +107,51 @@ const getBooks = async (
     data: result,
   };
 };
+const getBooksByCategoryId = async (
+  categoryId: string,
+  options: IPaginationOptions
+): Promise<IGenericResponse<Book[]>> => {
+  const { size, page, skip } = paginationHelpers.calculatePagination(options);
+
+  const result = await prisma.book.findMany({
+    where: {
+      category: {
+        id: categoryId,
+      },
+    },
+    skip,
+    take: size,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : {
+            createdAt: 'desc',
+          },
+    include: {
+      category: true,
+    },
+  });
+  const total = await prisma.book.count({
+    where: { category: { id: categoryId } },
+  });
+
+  const subtotal = await prisma.book.count();
+
+  const totalPage = Math.ceil(subtotal / size);
+
+  return {
+    meta: {
+      total,
+      page,
+      size,
+      totalPage,
+    },
+    data: result,
+  };
+};
 
 export const BookService = {
   insertIntoDB,
   getBooks,
+  getBooksByCategoryId,
 };

@@ -12,9 +12,7 @@ export const bookFilterableFields = [
 export const bookSearchableFields = [
   'title',
   'author',
-  'publicationDate',
   'genre',
-  'categoryId',
 ];
 
 export const bookRelationalFields: string[] = ['category'];
