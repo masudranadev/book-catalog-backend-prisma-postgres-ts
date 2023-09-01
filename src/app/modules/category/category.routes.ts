@@ -7,6 +7,8 @@ import { CategoryValidation } from './category.validation';
 
 const router = Router();
 
+router.get('/', CategoryController.getCategories);
+
 router.post(
   '/create-category',
   validateRequest(CategoryValidation.create),

@@ -1,5 +1,10 @@
-import { Category } from "@prisma/client";
+import { Category, Prisma} from "@prisma/client";
 import { prisma } from "../../../shared/prisma";
+import { ICategoryFilterRequest } from "./category.interface";
+import { IPaginationOptions } from "../../../interfaces/pagination";
+import { IGenericResponse } from "../../../interfaces/common";
+import { paginationHelpers } from "../../../helpers/paginationHelper";
+import { categorySearchableFields } from "./category.constants";
 
 const insertIntoDB = async(data: Category): Promise<Category> => {
     const result = await prisma.category.create({
@@ -8,6 +13,67 @@ const insertIntoDB = async(data: Category): Promise<Category> => {
     return result;
 }
 
+const getCategories = async (
+    filters: ICategoryFilterRequest,
+    options: IPaginationOptions
+  ): Promise<IGenericResponse<Category[]>> => {
+    const { page, limit, skip, sortBy, sortOrder } =
+      paginationHelpers.calculatePagination(options);
+    const { search, ...filterData } = filters;
+    const andConditions = [];
+  
+    if (search) {
+      andConditions.push({
+        OR: categorySearchableFields.map(field => ({
+          [field]: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        })),
+      });
+    }
+  
+    if (Object.keys(filterData).length > 0) {
+      andConditions.push({
+        AND: Object.keys(filterData).map(keys => ({
+          [keys]: {
+            equals: (filterData as any)[keys],
+          },
+        })),
+      });
+    }
+  
+    const whereCondition: Prisma.CategoryWhereInput =
+      andConditions.length > 0 ? { AND: andConditions } : {};
+  
+    const result = await prisma.category.findMany({
+      where: whereCondition,
+      orderBy:
+        sortBy && sortOrder
+          ? {
+              [sortBy]: sortOrder,
+            }
+          : { createdAt: 'desc' },
+  
+      skip,
+      take: limit,
+    });
+  
+    const total = await prisma.category.count({ where: whereCondition });
+  
+    return {
+      meta: {
+        total,
+        page,
+        limit,
+      },
+      data: result,
+    };
+  };
+
+  
+
 export const CategoryService = {
-    insertIntoDB
+    insertIntoDB,
+    getCategories
 }
