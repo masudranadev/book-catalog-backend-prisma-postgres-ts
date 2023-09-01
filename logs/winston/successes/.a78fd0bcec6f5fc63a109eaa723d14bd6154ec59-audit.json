@@ -19,6 +19,16 @@
             "date": 1693562557784,
             "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\successes\\phu-2023-01-09-16-success.log",
             "hash": "428b0e8f4061938d69446a269204b2692d953742f48a59b2f4c7d29f99c45a2b"
+        },
+        {
+            "date": 1693567397882,
+            "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\successes\\phu-2023-01-09-17-success.log",
+            "hash": "2435815d1eec17b964fb3400a2f38fb5284e0e406c4f6f022dab71abf12ebe5d"
+        },
+        {
+            "date": 1693569603060,
+            "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\successes\\phu-2023-01-09-18-success.log",
+            "hash": "5ecd4016210b17803c8bd0797379cae1048d7ccb37fbeb7bac5db3a21d3d7610"
         }
     ],
     "hashType": "sha256"

@@ -1,8 +1,7 @@
-export type ISigninData = {
-    email: string;
-    password: string;
-}
-
-export type ISigninResponse ={
-    accessToken: string;
-}
+export type IUserFilterRequest = {
+    search?: string;
+    name?: string;
+    email?: string;
+    role?: string;
+    address?: string;
+  };

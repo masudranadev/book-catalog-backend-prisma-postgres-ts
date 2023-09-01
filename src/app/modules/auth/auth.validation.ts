@@ -18,7 +18,7 @@ const signin = z.object({
   }),
 });
 
-export const UserValidation = {
+export const AuthValidation = {
   create,
   signin,
 };

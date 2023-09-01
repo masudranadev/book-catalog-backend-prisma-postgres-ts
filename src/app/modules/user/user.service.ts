@@ -1,53 +1,69 @@
-import { User } from '@prisma/client';
-import bcrypt from 'bcrypt';
-import httpStatus from 'http-status';
-import { Secret } from 'jsonwebtoken';
-import config from '../../../config';
-import ApiError from '../../../errors/ApiError';
-import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import { Prisma, User } from '@prisma/client';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { IGenericResponse } from '../../../interfaces/common';
+import { IPaginationOptions } from '../../../interfaces/pagination';
 import { prisma } from '../../../shared/prisma';
-import { ISigninData, ISigninResponse } from './user.interface';
+import { userSearchableFields } from './user.constants';
+import { IUserFilterRequest } from './user.interface';
 
-const insertIntoDB = async (data: User): Promise<User> => {
-  const hashPassword = await bcrypt.hash(data.password, 12);
-  data.password = hashPassword;
-  const result = await prisma.user.create({ data });
-  return result;
-};
+const getUsers = async (
+  filters: IUserFilterRequest,
+  options: IPaginationOptions
+): Promise<IGenericResponse<User[]>> => {
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelpers.calculatePagination(options);
+  const { search, ...filterData } = filters;
+  const andConditions = [];
 
-const signin = async (payload: ISigninData): Promise<ISigninResponse> => {
-  const { email, password } = payload;
+  if (search) {
+    andConditions.push({
+      OR: userSearchableFields.map(field => ({
+        [field]: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      })),
+    });
+  }
 
-  const isUserExist = await prisma.user.findUnique({
-    where: {
-      email,
-    },
+  if (Object.keys(filterData).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filterData).map(keys => ({
+        [keys]: {
+          equals: (filterData as any)[keys],
+        },
+      })),
+    });
+  }
+
+  const whereCondition: Prisma.UserWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
+  const result = await prisma.user.findMany({
+    where: whereCondition,
+    orderBy:
+      sortBy && sortOrder
+        ? {
+            [sortBy]: sortOrder,
+          }
+        : { createdAt: 'desc' },
+
+    skip,
+    take: limit,
   });
 
-  if (!isUserExist) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "user can't find!");
-  }
-
-  if (
-    isUserExist.password &&
-    !(await bcrypt.compare(password, isUserExist.password))
-  ) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "password doesn't match");
-  }
-
-  const { id: userId, role } = isUserExist;
-  const accessToken = jwtHelpers.createToken(
-    { userId, role },
-    config.jwt.secret as Secret,
-    config.jwt.expires_in as string
-  );
+  const total = await prisma.user.count({ where: whereCondition });
 
   return {
-    accessToken,
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
   };
 };
 
 export const UserService = {
-  insertIntoDB,
-  signin,
+  getUsers,
 };

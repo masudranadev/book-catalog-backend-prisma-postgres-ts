@@ -1,19 +1,10 @@
-import { Router } from 'express';
-import validateRequest from '../../middlewares/validateRequest';
-import { UserController } from './user.controller';
-import { UserValidation } from './user.validation';
+import { Router } from "express";
+import auth from "../../middlewares/auth";
+import { ENUM_USER_ROLE } from "../../../enums/user";
+import { UserController } from "./user.controller";
 
 const router = Router();
 
-router.post(
-  '/signup',
-  validateRequest(UserValidation.create),
-  UserController.insertIntoDB
-);
-router.post(
-  '/signin',
-  validateRequest(UserValidation.signin),
-  UserController.signin
-);
+router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getUsers);
 
 export const UserRoutes = router;
