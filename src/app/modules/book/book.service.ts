@@ -107,6 +107,7 @@ const getBooks = async (
     data: result,
   };
 };
+
 const getBooksByCategoryId = async (
   categoryId: string,
   options: IPaginationOptions
@@ -150,8 +151,14 @@ const getBooksByCategoryId = async (
   };
 };
 
+const getBookById = async(id: string): Promise<Book | null> => {
+  const result = await prisma.book.findUnique({where: {id}});
+  return result;
+}
+
 export const BookService = {
   insertIntoDB,
   getBooks,
   getBooksByCategoryId,
+  getBookById
 };
