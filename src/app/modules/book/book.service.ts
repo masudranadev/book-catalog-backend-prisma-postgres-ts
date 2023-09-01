@@ -167,6 +167,14 @@ const updateBookById = async (
   });
   return result;
 };
+const deleteBookById = async (id: string): Promise<Book | null> => {
+  const result = await prisma.book.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
 
 export const BookService = {
   insertIntoDB,
@@ -174,4 +182,5 @@ export const BookService = {
   getBooksByCategoryId,
   getBookById,
   updateBookById,
+  deleteBookById
 };

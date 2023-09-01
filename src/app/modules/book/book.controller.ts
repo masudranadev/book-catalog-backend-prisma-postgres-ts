@@ -67,11 +67,22 @@ const updateBookById = catchAsync(async(req: Request, res: Response) => {
     data: result,
   });
 })
+const deleteBookById = catchAsync(async(req: Request, res: Response) => {
+  const {id} = req.params;
+  const result = await BookService.deleteBookById(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Book deleted successfully',
+    data: result,
+  });
+})
 
 export const BookController = {
   insertIntoDB,
   getBooks,
   getBooksByCategoryId,
   getBookById,
-  updateBookById
+  updateBookById,
+  deleteBookById
 };
