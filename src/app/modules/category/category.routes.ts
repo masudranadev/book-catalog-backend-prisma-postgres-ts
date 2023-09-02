@@ -15,6 +15,11 @@ router.patch(
   validateRequest(CategoryValidation.update),
   CategoryController.updateCategory
 );
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  CategoryController.deleteCategory
+);
 
 router.post(
   '/create-category',

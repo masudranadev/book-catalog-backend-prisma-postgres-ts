@@ -97,10 +97,23 @@ const updateCategory = async (
 
   return result;
 };
+const deleteCategory = async (id: string): Promise<Category | null> => {
+  await prisma.book.deleteMany({
+    where: {
+      categoryId: id,
+    },
+  });
+  const result = await prisma.category.delete({
+    where: { id },
+  });
+
+  return result;
+};
 
 export const CategoryService = {
   insertIntoDB,
   getCategories,
   getCategory,
   updateCategory,
+  deleteCategory,
 };
