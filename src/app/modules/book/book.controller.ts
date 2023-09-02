@@ -56,6 +56,7 @@ const getBookById = catchAsync(async(req: Request, res: Response) => {
     data: result,
   });
 })
+
 const updateBookById = catchAsync(async(req: Request, res: Response) => {
   const {id} = req.params;
   const data = req.body;
@@ -67,6 +68,7 @@ const updateBookById = catchAsync(async(req: Request, res: Response) => {
     data: result,
   });
 })
+
 const deleteBookById = catchAsync(async(req: Request, res: Response) => {
   const {id} = req.params;
   const result = await BookService.deleteBookById(id);
