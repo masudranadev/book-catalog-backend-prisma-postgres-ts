@@ -74,6 +74,21 @@
             "date": 1693631007810,
             "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\successes\\phu-2023-02-09-11-success.log",
             "hash": "49c90a556609f7fabede16b31d47e7de8a1de6e2bc98d2ff2363040c7bef3263"
+        },
+        {
+            "date": 1693635591869,
+            "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\successes\\phu-2023-02-09-12-success.log",
+            "hash": "9d86617797679d40816d9bb034c02307e30c733655d10fe118f498abb890f46f"
+        },
+        {
+            "date": 1693638031720,
+            "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\successes\\phu-2023-02-09-13-success.log",
+            "hash": "cf6556c55c339fc0c4a4b3113bab57db1a6cb6e88efab8427525384a1b46ebd2"
+        },
+        {
+            "date": 1693642360473,
+            "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\successes\\phu-2023-02-09-14-success.log",
+            "hash": "d68494bb9a7ae47acecaab7ae18fd371885c5dc9442d40792d8e1f368301da32"
         }
     ],
     "hashType": "sha256"

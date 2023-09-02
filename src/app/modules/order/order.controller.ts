@@ -24,8 +24,9 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 const getOrders = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, orderFilterableFields);
   const options = pick(req.query, paginationFields);
+  const token = req.headers.authorization as string;
 
-  const result = await OrderService.getOrders(filters, options);
+  const result = await OrderService.getOrders(filters, options, token);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -35,18 +36,6 @@ const getOrders = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getOrdersByCustomer = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization as string;
-
-  const result = await OrderService.getOrdersByCustomer(token);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Order retrieved Successfully',
-    data: result,
-  });
-});
 const getOrderByCustomerAndAdminById = catchAsync(
   async (req: Request, res: Response) => {
     const token = req.headers.authorization as string;
@@ -68,7 +57,6 @@ const getOrderByCustomerAndAdminById = catchAsync(
 
 export const OrderController = {
   getOrderByCustomerAndAdminById,
-  getOrdersByCustomer,
   insertIntoDB,
   getOrders,
 };

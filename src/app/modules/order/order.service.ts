@@ -35,8 +35,15 @@ const insertIntoDB = async (
 
 const getOrders = async (
   filters: IOrderFilterRequest,
-  options: IPaginationOptions
-): Promise<IGenericResponse<Order[]>> => {
+  options: IPaginationOptions,
+  token: string
+): Promise<IGenericResponse<Order[] | null>> => {
+  const user = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found');
+  }
+
   const { size, page, skip } = paginationHelpers.calculatePagination(options);
   const { search, ...filterData } = filters;
 
@@ -76,28 +83,65 @@ const getOrders = async (
   const whereConditions: Prisma.OrderWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const result = await prisma.order.findMany({
-    where: whereConditions,
-    skip,
-    take: size,
-    orderBy:
-      options.sortBy && options.sortOrder
-        ? { [options.sortBy]: options.sortOrder }
-        : {
-            createdAt: 'desc',
-          },
-    include: {
-      user: true,
-    },
-  });
-  const total = await prisma.order.count({
-    where: whereConditions,
-  });
+  if (user.role === 'admin') {
+    const result = await prisma.order.findMany({
+      where: whereConditions,
+      skip,
+      take: size,
+      orderBy:
+        options.sortBy && options.sortOrder
+          ? { [options.sortBy]: options.sortOrder }
+          : {
+              createdAt: 'desc',
+            },
+      include: {
+        user: true,
+      },
+    });
+    const total = await prisma.order.count({
+      where: whereConditions,
+    });
 
-  const subtotal = await prisma.order.count();
+    const subtotal = await prisma.order.count();
 
-  const totalPage = Math.ceil(subtotal / size);
+    const totalPage = Math.ceil(subtotal / size);
 
+    return {
+      meta: {
+        total,
+        page,
+        size,
+        totalPage,
+      },
+      data: result,
+    };
+  } else if (user.role === 'customer') {
+    const result = await prisma.order.findMany({
+      where: { userId: user.userId },
+    });
+
+    const total = await prisma.order.count({
+      where: { userId: user.userId },
+    });
+
+    const subtotal = await prisma.order.count();
+
+    const totalPage = Math.ceil(subtotal / size);
+
+    return {
+      meta: {
+        total,
+        page,
+        size,
+        totalPage,
+      },
+      data: result,
+    };
+  }
+
+  const total = await prisma.order.count({});
+
+  const totalPage = Math.ceil(total / size);
   return {
     meta: {
       total,
@@ -105,22 +149,8 @@ const getOrders = async (
       size,
       totalPage,
     },
-    data: result,
+    data: null,
   };
-};
-
-const getOrdersByCustomer = async (token: string): Promise<Order[]> => {
-  const user = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
-
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'user not found');
-  }
-
-  const result = await prisma.order.findMany({
-    where: { userId: user.userId },
-  });
-
-  return result;
 };
 
 const getOrderByCustomerAndAdminById = async (
@@ -150,6 +180,5 @@ const getOrderByCustomerAndAdminById = async (
 export const OrderService = {
   insertIntoDB,
   getOrders,
-  getOrdersByCustomer,
   getOrderByCustomerAndAdminById,
 };

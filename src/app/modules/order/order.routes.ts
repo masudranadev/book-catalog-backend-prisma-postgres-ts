@@ -7,9 +7,11 @@ import { OrderValidation } from './order.validation';
 
 const router = Router();
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), OrderController.getOrders);
-
-router.get('/', OrderController.getOrdersByCustomer);
+router.get(
+  '/',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CUSTOMER),
+  OrderController.getOrders
+);
 
 router.get(
   '/:orderId',
