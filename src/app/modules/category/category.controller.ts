@@ -24,13 +24,23 @@ const getCategories = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'users retrieved successfully',
+    message: 'Category fetched successfully',
     meta: result.meta,
     data: result.data,
+  });
+});
+const getCategory = catchAsync(async (req: Request, res: Response) => {
+  const result = await CategoryService.getCategory(req.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Category fetched successfully',
+    data: result,
   });
 });
 
 export const CategoryController = {
   insertIntoDB,
   getCategories,
+  getCategory,
 };
