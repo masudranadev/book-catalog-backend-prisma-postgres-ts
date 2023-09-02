@@ -12,7 +12,10 @@ import {
 import { IBookFilterRequest } from './book.interface';
 
 const insertIntoDB = async (data: Book): Promise<Book> => {
-  const result = await prisma.book.create({ data });
+  const result = await prisma.book.create({
+    data,
+    include: { category: true },
+  });
   return result;
 };
 
@@ -155,6 +158,7 @@ const getBookById = async (id: string): Promise<Book | null> => {
   const result = await prisma.book.findUnique({ where: { id } });
   return result;
 };
+
 const updateBookById = async (
   id: string,
   payload: Partial<Book>
@@ -167,6 +171,7 @@ const updateBookById = async (
   });
   return result;
 };
+
 const deleteBookById = async (id: string): Promise<Book | null> => {
   const result = await prisma.book.delete({
     where: {
@@ -182,5 +187,5 @@ export const BookService = {
   getBooksByCategoryId,
   getBookById,
   updateBookById,
-  deleteBookById
+  deleteBookById,
 };

@@ -86,6 +86,7 @@ const getCategory = async (id: string): Promise<Category | null> => {
 
   return result;
 };
+
 const updateCategory = async (
   id: string,
   payload: Partial<Category>
@@ -97,6 +98,7 @@ const updateCategory = async (
 
   return result;
 };
+
 const deleteCategory = async (id: string): Promise<Category | null> => {
   await prisma.book.deleteMany({
     where: {
