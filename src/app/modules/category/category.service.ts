@@ -70,7 +70,7 @@ const getCategories = async (
       total,
       size,
       page,
-      totalPage
+      totalPage,
     },
     data: result,
   };
@@ -86,9 +86,21 @@ const getCategory = async (id: string): Promise<Category | null> => {
 
   return result;
 };
+const updateCategory = async (
+  id: string,
+  payload: Partial<Category>
+): Promise<Category | null> => {
+  const result = await prisma.category.update({
+    where: { id },
+    data: payload,
+  });
+
+  return result;
+};
 
 export const CategoryService = {
   insertIntoDB,
   getCategories,
   getCategory,
+  updateCategory,
 };

@@ -9,6 +9,12 @@ const router = Router();
 
 router.get('/', CategoryController.getCategories);
 router.get('/:id', CategoryController.getCategory);
+router.patch(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  validateRequest(CategoryValidation.update),
+  CategoryController.updateCategory
+);
 
 router.post(
   '/create-category',
