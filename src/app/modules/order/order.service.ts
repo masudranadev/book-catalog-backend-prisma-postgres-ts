@@ -102,7 +102,22 @@ const getOrders = async (
     };
   };
 
+  const getOrdersByCustomer = async (token: string): Promise<Order[]> => {
+    const user = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
+
+    if(!user){
+      throw new ApiError(httpStatus.NOT_FOUND, "user not found");
+    }
+
+    const result = await prisma.order.findMany({
+      where: {userId: user.userId}
+    });
+    
+    return result;
+  };
+
 export const OrderService = {
   insertIntoDB,
-  getOrders
+  getOrders,
+  getOrdersByCustomer
 };

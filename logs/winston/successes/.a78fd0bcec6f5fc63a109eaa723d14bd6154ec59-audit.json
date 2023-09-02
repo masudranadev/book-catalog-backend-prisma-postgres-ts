@@ -69,6 +69,11 @@
             "date": 1693627201441,
             "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\successes\\phu-2023-02-09-10-success.log",
             "hash": "26dda6f4111a4818a8797f785a12bcc8ea6afb29c3a36a703b5343c4b888e160"
+        },
+        {
+            "date": 1693631007810,
+            "name": "D:\\next-level\\mission-6\\assignment-8\\book-catalog-backend\\logs\\winston\\successes\\phu-2023-02-09-11-success.log",
+            "hash": "49c90a556609f7fabede16b31d47e7de8a1de6e2bc98d2ff2363040c7bef3263"
         }
     ],
     "hashType": "sha256"

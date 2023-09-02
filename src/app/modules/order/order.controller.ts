@@ -29,13 +29,27 @@ const getOrders = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Orders Fetched successfully',
+      message: 'Orders retrieved successfully',
       meta: result.meta,
       data: result.data,
     });
   });
 
+  const getOrdersByCustomer = catchAsync(async (req: Request, res: Response) => {
+    const token = req.headers.authorization as string;
+  
+    const result = await OrderService.getOrdersByCustomer(token);
+      
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Order retrieved Successfully',
+      data: result,
+    });
+  });
+
 export const OrderController = {
   insertIntoDB,
-  getOrders
+  getOrders,
+  getOrdersByCustomer
 };
