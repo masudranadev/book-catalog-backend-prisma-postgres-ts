@@ -8,11 +8,9 @@ export type IOrderData = {
   orderedBooks: IOrderBookData[];
 }
 
-export type IOrderResponse ={
-  id: string;
-  userId: string;
-  status: string | null;
-  orderedBooks: IOrderBookData[],
-  createdAt: Date;
-  updatedAt: Date;
+
+export type IOrderFilterRequest = {
+  search?: string;
+  id?: string;
+  status?: string;
 }
