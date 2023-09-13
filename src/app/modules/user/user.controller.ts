@@ -29,6 +29,7 @@ const getUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const data = req.body;
@@ -42,7 +43,7 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
-    const result = await UserService.getUser(req.params.id);
+    const result = await UserService.deleteUser(req.params.id);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,

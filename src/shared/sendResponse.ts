@@ -10,7 +10,7 @@ type IApiReponse<T> = {
     total: number;
     totalPage?: number;
   };
-  data?: T | null;
+  data: T | null | undefined;
 };
 
 const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {

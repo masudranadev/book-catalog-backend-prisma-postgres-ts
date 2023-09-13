@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Prisma, User } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
@@ -61,7 +62,7 @@ const getUsers = async (
       total,
       page,
       size,
-      totalPage
+      totalPage,
     },
     data: result,
   };
